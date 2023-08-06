@@ -34,4 +34,18 @@ internal class MockUserDataSourceTest {
         Assertions.assertThat(banks).allMatch { it.name.isNotBlank() }
         Assertions.assertThat(banks).allMatch { it.email.isNotBlank() }
     }
+
+//    @Test
+//    fun `should provide valid mock data`() {
+//        // given
+//
+//
+//        // when
+//        val banks = mockDataSource.retrieveUsers()
+//
+//        // then
+//        Assertions.assertThat(banks).allMatch { it.id > 0 }
+//        Assertions.assertThat(banks).allMatch { it.name.isNotBlank() }
+//        Assertions.assertThat(banks).allMatch { it.email.isNotBlank() }
+//    }
 }

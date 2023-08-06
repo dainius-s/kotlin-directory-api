@@ -9,5 +9,5 @@ class UserService(
     private val dataSource: UserDataSource
 ) {
     fun getUsers(): Collection<User> = dataSource.retrieveUsers()
-
+    fun getUser(id: Int): User = dataSource.retrieveUser(id)
 }
