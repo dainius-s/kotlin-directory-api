@@ -14,7 +14,7 @@ internal class MockUserDataSourceTest {
 
         
         // when
-        val banks = mockDataSource.getUsers()
+        val banks = mockDataSource.retrieveUsers()
         
         
         // then
@@ -27,7 +27,7 @@ internal class MockUserDataSourceTest {
 
 
         // when
-        val banks = mockDataSource.getUsers()
+        val banks = mockDataSource.retrieveUsers()
 
         // then
         Assertions.assertThat(banks).allMatch { it.id > 0 }
