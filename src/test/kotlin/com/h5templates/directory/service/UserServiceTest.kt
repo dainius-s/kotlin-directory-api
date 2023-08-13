@@ -21,4 +21,18 @@ class UserServiceTest {
             dataSource.retrieveUsers()
         }
     }
+
+    @Test
+    fun `should call its data source to retrieve user with id`() {
+        //given
+        val id = 1
+
+        // when
+        userService.getUser(id)
+
+        // then
+        verify(exactly = 1) {
+            dataSource.retrieveUser(id)
+        }
+    }
 }

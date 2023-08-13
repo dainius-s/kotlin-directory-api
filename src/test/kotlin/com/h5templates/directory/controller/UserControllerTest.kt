@@ -70,7 +70,6 @@ internal class UserControllerTest {
 
             // then
             response
-                .andDo { print() }
                 .andExpect { status { isNotFound() } }
         }
     }
