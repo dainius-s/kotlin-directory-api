@@ -3,11 +3,12 @@ package com.h5templates.directory.datasource.mock
 import com.h5templates.directory.datasource.UserDataSource
 import com.h5templates.directory.model.User
 import org.springframework.stereotype.Repository
+import java.lang.IllegalArgumentException
 
 @Repository
 class MockUserDataSource: UserDataSource {
 
-    val users = listOf<User>(
+    val users = mutableListOf<User>(
         User(1, "John Smith", "john.smith@example.com"),
         User(2, "Jane Smith", "jane.smith@example.com"),
     )
@@ -17,4 +18,12 @@ class MockUserDataSource: UserDataSource {
         users.firstOrNull() { it.id == id }
             ?: throw NoSuchElementException("User with id: $id could not be found")
 
+    override fun createUser(user: User): User {
+        if(users.any {it.email == user.email }) {
+            throw IllegalArgumentException("User with email ${user.email} already exist")
+        }
+        users.add(user)
+
+        return user
+    }
 }

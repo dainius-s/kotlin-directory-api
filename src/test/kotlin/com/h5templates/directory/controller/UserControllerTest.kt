@@ -1,5 +1,7 @@
 package com.h5templates.directory.controller
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.h5templates.directory.model.User
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
@@ -11,27 +13,27 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
+import org.springframework.test.web.servlet.post
 
 @SpringBootTest
 @AutoConfigureMockMvc
-internal class UserControllerTest {
-
-    @Autowired
-    lateinit var mockMvc: MockMvc
-
+internal class UserControllerTest @Autowired constructor(
+    val mockMvc: MockMvc,
+    val objectMapper: ObjectMapper,
+) {
     val baseUrl = "/api/users"
 
     @Nested
-    @DisplayName("getUsers()")
+    @DisplayName("GET /api/users")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     inner class GetUsers {
         @Test
         fun `should return all users`() {
             // when
-            val response = mockMvc.get(baseUrl)
+            val getUsers = mockMvc.get(baseUrl)
 
             // then
-            response.andExpect {
+            getUsers.andExpect {
                 status { isOk() }
                 content { contentType(MediaType.APPLICATION_JSON) }
                 jsonPath("$[0].name") { value("John Smith") }
@@ -41,7 +43,7 @@ internal class UserControllerTest {
     }
 
     @Nested
-    @DisplayName("getUser()")
+    @DisplayName("GET /api/users/{id}")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     inner class GetUser {
         @Test
@@ -50,10 +52,10 @@ internal class UserControllerTest {
             val id = 1;
             // when
 
-            val response = mockMvc.get("$baseUrl/$id")
+            val getUser = mockMvc.get("$baseUrl/$id")
 
             // then
-            response.andExpect {
+            getUser.andExpect {
                 status { isOk() }
                 content { contentType(MediaType.APPLICATION_JSON) }
                 jsonPath(".id") { value(id) }
@@ -66,12 +68,75 @@ internal class UserControllerTest {
             val id = 0
 
             // when
-            val response = mockMvc.get("$baseUrl/$id")
+            val getUser = mockMvc.get("$baseUrl/$id")
 
             // then
-            response
-                .andExpect { status { isNotFound() } }
+            getUser.andExpect {
+                status { isNotFound() }
+            }
         }
+    }
+
+    @Nested
+    @DisplayName("POST /api/users")
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    inner class CreateUser {
+
+        @Test
+        fun `should create the new user`() {
+            // given
+            val payload = User(
+                10,
+                "Joe Biederman",
+                "joe.biederman@example.com",
+                false,
+                true,
+            )
+
+            // when
+            val createUser = mockMvc.post(baseUrl, payload) {
+                contentType = MediaType.APPLICATION_JSON
+                content = objectMapper.writeValueAsString(payload)
+            }
+
+
+            // then
+            createUser
+                .andExpect {
+                    status { isCreated() }
+                    content { contentType(MediaType.APPLICATION_JSON) }
+                    jsonPath("$.name") { value("Joe Biederman") }
+                    jsonPath("$.email") { value("joe.biederman@example.com") }
+                    jsonPath("$.verified") { value(false) }
+                    jsonPath("$.active") { value(true) }
+                }
+
+        }
+
+        @Test
+        fun `should return BAD_REQUEST if user with given email already exist`() {
+            // given
+            val payload = User(
+                10,
+                "John Smith",
+                "john.smith@example.com",
+                false,
+                true,
+            )
+
+            // when
+            val createUser = mockMvc.post(baseUrl, payload) {
+                contentType = MediaType.APPLICATION_JSON
+                content = objectMapper.writeValueAsString(payload)
+            }
+
+            // then
+            createUser
+                .andExpect {
+                    status { isBadRequest() }
+                }
+        }
+
     }
 
 }

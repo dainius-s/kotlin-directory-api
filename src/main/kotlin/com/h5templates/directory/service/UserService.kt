@@ -10,4 +10,5 @@ class UserService(
 ) {
     fun getUsers(): Collection<User> = dataSource.retrieveUsers()
     fun getUser(id: Int): User = dataSource.retrieveUser(id)
+    fun createUser(user: User): User = dataSource.createUser(user)
 }
