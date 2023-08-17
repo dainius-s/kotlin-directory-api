@@ -12,4 +12,5 @@ class UserService(
     fun getUser(id: Int): User = dataSource.retrieveUser(id)
     fun createUser(user: User): User = dataSource.createUser(user)
     fun updateUser(id: Int, user: User): User = dataSource.updateUser(id, user)
+    fun deleteUser(id: Int): Unit = dataSource.deleteUser(id)
 }

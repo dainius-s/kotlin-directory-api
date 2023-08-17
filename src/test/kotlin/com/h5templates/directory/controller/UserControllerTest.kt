@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
-import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.get
-import org.springframework.test.web.servlet.post
-import org.springframework.test.web.servlet.put
+import org.springframework.test.web.servlet.*
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -201,6 +198,44 @@ internal class UserControllerTest @Autowired constructor(
                 }
         }
 
+    }
+
+    @Nested
+    @DisplayName("DELETE /api/users/{id}")
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    inner class DeleteUser {
+
+        @Test
+        fun `should delete user with id provided`() {
+            // given
+            val id = 1
+
+            // when
+            val deleteUser = mockMvc.delete("$baseUrl/$id")
+
+
+            // then
+            deleteUser
+                .andExpect {
+                    status { isNoContent() }
+                }
+        }
+
+    }
+
+    @Test
+    fun `should return Not Found if the user with id does not exist`() {
+        // given
+        val id = 0
+
+        // when
+        val deleteNotExistingUser = mockMvc.delete("$baseUrl/$id")
+
+        // then
+        deleteNotExistingUser
+            .andExpect {
+                status { isNotFound() }
+            }
     }
 
 }

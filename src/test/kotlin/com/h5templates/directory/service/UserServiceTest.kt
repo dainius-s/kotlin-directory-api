@@ -78,4 +78,18 @@ class UserServiceTest {
         }
         
     }
+
+    @Test
+    fun `should call it's data source to delete user with id`() {
+        // given
+        val id = 1
+
+        // when
+        userService.deleteUser(id)
+
+        // then
+        verify(exactly = 1) {
+            dataSource.deleteUser(id)
+        }
+    }
 }

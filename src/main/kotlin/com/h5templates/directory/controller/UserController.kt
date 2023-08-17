@@ -35,4 +35,8 @@ class UserController(
     @ResponseStatus(HttpStatus.OK)
     fun updateUser(@PathVariable id: Int, @RequestBody user: User): User = userService.updateUser(id, user)
 
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun deleteUser(@PathVariable id: Int): Unit = userService.deleteUser(id)
+
 }
