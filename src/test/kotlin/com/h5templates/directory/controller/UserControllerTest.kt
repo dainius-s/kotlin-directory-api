@@ -14,6 +14,7 @@ import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
+import org.springframework.test.web.servlet.put
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -68,12 +69,13 @@ internal class UserControllerTest @Autowired constructor(
             val id = 0
 
             // when
-            val getUser = mockMvc.get("$baseUrl/$id")
+            val updateNotExistingUser = mockMvc.get("$baseUrl/$id")
 
             // then
-            getUser.andExpect {
-                status { isNotFound() }
-            }
+            updateNotExistingUser
+                .andExpect {
+                    status { isNotFound() }
+                }
         }
     }
 
@@ -125,15 +127,77 @@ internal class UserControllerTest @Autowired constructor(
             )
 
             // when
-            val createUser = mockMvc.post(baseUrl, payload) {
+            val createDuplicateEmailUser = mockMvc.post(baseUrl, payload) {
                 contentType = MediaType.APPLICATION_JSON
                 content = objectMapper.writeValueAsString(payload)
             }
 
             // then
-            createUser
+            createDuplicateEmailUser
                 .andExpect {
                     status { isBadRequest() }
+                }
+        }
+
+    }
+
+    @Nested
+    @DisplayName("PUT /api/users/{id}")
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    inner class UpdateUser {
+
+        @Test
+        fun `should update user with data provided`() {
+            // given
+            val id = 1
+
+            val payload = User(
+                id,
+                "Joe Biederman",
+                "joe.biederman@example.com",
+                false,
+                true,
+            )
+
+            // when
+            val updateUser = mockMvc.put("$baseUrl/$id") {
+                contentType = MediaType.APPLICATION_JSON
+                content = objectMapper.writeValueAsString(payload)
+            }
+
+            // then
+            updateUser
+                .andExpect {
+                    status { isOk() }
+                    content {
+                        contentType(MediaType.APPLICATION_JSON)
+                        json(objectMapper.writeValueAsString(payload))
+                    }
+                }
+        }
+
+        @Test
+        fun `should return Not Found if the user with id does not exist`() {
+            // given
+            val id = 0
+            val payload = User(
+                id,
+                "Joe Biederman",
+                "joe.biederman@example.com",
+                false,
+                true,
+            )
+
+            // when
+            val updateNotExistingUser = mockMvc.put("$baseUrl/$id") {
+                contentType = MediaType.APPLICATION_JSON
+                content = objectMapper.writeValueAsString(payload)
+            }
+
+            // then
+            updateNotExistingUser
+                .andExpect {
+                    status { isNotFound() }
                 }
         }
 

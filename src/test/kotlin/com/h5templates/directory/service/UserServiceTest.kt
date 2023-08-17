@@ -56,4 +56,26 @@ class UserServiceTest {
             dataSource.createUser(payload)
         }
     }
+    
+    @Test
+    fun `should call its data source to update user with data provided`() {
+        // given
+        val id = 1
+        val payload = User(
+            id,
+            "Joe Biederman",
+            "joe.biederman@example.com",
+            false,
+            true,
+        )
+        
+        // when
+        userService.updateUser(id, payload)
+        
+        // then
+        verify(exactly = 1) {
+            dataSource.updateUser(id, payload)
+        }
+        
+    }
 }

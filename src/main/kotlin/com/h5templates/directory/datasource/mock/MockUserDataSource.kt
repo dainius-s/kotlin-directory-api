@@ -26,4 +26,14 @@ class MockUserDataSource: UserDataSource {
 
         return user
     }
+
+    override fun updateUser(id: Int, user: User): User {
+        val foundUser = users.firstOrNull() { it.id == id }
+            ?: throw NoSuchElementException("User with id: $id could not be found")
+
+        users.remove(foundUser)
+        users.add(user)
+
+        return user
+    }
 }

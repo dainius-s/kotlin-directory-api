@@ -31,4 +31,8 @@ class UserController(
     @ResponseStatus(HttpStatus.CREATED)
     fun createUser(@RequestBody user: User): User = userService.createUser(user)
 
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    fun updateUser(@PathVariable id: Int, @RequestBody user: User): User = userService.updateUser(id, user)
+
 }
