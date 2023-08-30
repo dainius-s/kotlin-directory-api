@@ -1,4 +1,4 @@
-package com.h5templates.directory.datasource
+package com.h5templates.directory.repository
 
 import com.h5templates.directory.model.User
 

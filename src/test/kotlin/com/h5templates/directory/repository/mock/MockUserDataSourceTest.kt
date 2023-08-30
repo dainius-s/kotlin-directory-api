@@ -1,4 +1,4 @@
-package com.h5templates.directory.datasource.mock
+package com.h5templates.directory.repository.mock
 
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Assertions.*

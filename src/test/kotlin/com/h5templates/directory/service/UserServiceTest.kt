@@ -1,10 +1,9 @@
 package com.h5templates.directory.service
 
-import com.h5templates.directory.datasource.UserDataSource
+import com.h5templates.directory.repository.UserDataSource
 import com.h5templates.directory.model.User
 import io.mockk.mockk
 import io.mockk.verify
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
 class UserServiceTest {
