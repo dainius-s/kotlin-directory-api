@@ -2,6 +2,7 @@ package com.h5templates.directory.controller
 
 import com.h5templates.directory.model.User
 import com.h5templates.directory.service.UserService
+import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpStatus
 import org.springframework.http.HttpStatusCode
 import org.springframework.http.ResponseEntity
@@ -22,7 +23,10 @@ class UserController(
         ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
 
     @GetMapping
-    fun getUsers(): Collection<User> = userService.getUsers()
+    fun getUsers(
+        @RequestParam(defaultValue = "1") page: Int,
+        @RequestParam(defaultValue = "25", name="per_page") size: Int,
+    ): Iterable<User> = userService.getUsers(PageRequest.of(page, size))
 
     @GetMapping("/{id}")
     fun getUser(@PathVariable id: Int) = userService.getUser(id)
