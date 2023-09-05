@@ -2,23 +2,28 @@ package com.h5templates.directory.service
 
 import com.h5templates.directory.repository.UserDataSource
 import com.h5templates.directory.model.User
+import com.h5templates.directory.repository.UserRepository
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test
+import org.springframework.data.domain.PageRequest
 
 class UserServiceTest {
 
-    private val dataSource: UserDataSource = mockk(relaxed = true)
+    private val dataSource: UserRepository = mockk(relaxed = true)
     private val userService = UserService(dataSource)
     
     @Test
     fun `should call its data source to retrieve users`() {
+        //given
+        val pageable = PageRequest.of(0, 1);
+
         // when
-        userService.getUsers()
+        userService.getUsers(pageable)
         
         // then
         verify(exactly = 1) {
-            dataSource.retrieveUsers()
+            dataSource.findAll(pageable)
         }
     }
 
@@ -32,7 +37,7 @@ class UserServiceTest {
 
         // then
         verify(exactly = 1) {
-            dataSource.retrieveUser(id)
+            dataSource.findById(id)
         }
     }
 
@@ -52,7 +57,7 @@ class UserServiceTest {
 
         // then
         verify(exactly = 1) {
-            dataSource.createUser(payload)
+            dataSource.save(payload)
         }
     }
     
@@ -73,7 +78,7 @@ class UserServiceTest {
         
         // then
         verify(exactly = 1) {
-            dataSource.updateUser(id, payload)
+            dataSource.save(payload)
         }
         
     }
@@ -88,7 +93,7 @@ class UserServiceTest {
 
         // then
         verify(exactly = 1) {
-            dataSource.deleteUser(id)
+            dataSource.deleteById(id)
         }
     }
 }
