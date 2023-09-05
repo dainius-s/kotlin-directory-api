@@ -1,16 +1,19 @@
 package com.h5templates.directory.service
 
-import com.h5templates.directory.repository.UserDataSource
 import com.h5templates.directory.model.User
+import com.h5templates.directory.repository.UserRepository
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 class UserService(
-    private val dataSource: UserDataSource
+    private val dataSource: UserRepository,
 ) {
-    fun getUsers(): Collection<User> = dataSource.retrieveUsers()
-    fun getUser(id: Int): User = dataSource.retrieveUser(id)
-    fun createUser(user: User): User = dataSource.createUser(user)
-    fun updateUser(id: Int, user: User): User = dataSource.updateUser(id, user)
-    fun deleteUser(id: Int): Unit = dataSource.deleteUser(id)
+    fun getUsers(pageable: Pageable): Page<User> = dataSource.findAll(pageable)
+    fun getUser(id: Int): Optional<User> = dataSource.findById(id)
+    fun createUser(user: User): User = dataSource.save(user)
+    fun updateUser(id: Int, user: User): User = dataSource.save(user)
+    fun deleteUser(id: Int): Unit = dataSource.deleteById(id)
 }
