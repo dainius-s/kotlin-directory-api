@@ -11,7 +11,7 @@ import java.util.*
 class UserService(
     private val dataSource: UserRepository,
 ) {
-    fun getUsers(pageable: Pageable): Iterable<User> = dataSource.findAll()
+    fun getUsers(pageable: Pageable): Page<User> = dataSource.findAll(pageable)
     fun getUser(id: Int): User = findUser(id)
     fun createUser(user: User): User = dataSource.save(user)
     fun updateUser(id: Int, user: User): User = dataSource.save(with(user) {

@@ -24,7 +24,7 @@ class UserController(
 
     @GetMapping
     fun getUsers(
-        @RequestParam(defaultValue = "1") page: Int,
+        @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "25", name="per_page") size: Int,
     ): Iterable<User> = userService.getUsers(PageRequest.of(page, size))
 
