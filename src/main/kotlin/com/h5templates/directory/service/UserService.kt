@@ -11,9 +11,20 @@ import java.util.*
 class UserService(
     private val dataSource: UserRepository,
 ) {
-    fun getUsers(pageable: Pageable): Page<User> = dataSource.findAll(pageable)
-    fun getUser(id: Int): Optional<User> = dataSource.findById(id)
+    fun getUsers(pageable: Pageable): Iterable<User> = dataSource.findAll()
+    fun getUser(id: Int): User = findUser(id)
     fun createUser(user: User): User = dataSource.save(user)
-    fun updateUser(id: Int, user: User): User = dataSource.save(user)
-    fun deleteUser(id: Int): Unit = dataSource.deleteById(id)
+    fun updateUser(id: Int, user: User): User = dataSource.save(with(user) {
+        findUser(id).copy(
+            name = name,
+            email = email,
+            verified = verified,
+            active = active,
+        )
+    })
+
+    fun deleteUser(id: Int): Unit = dataSource.delete(findUser(id))
+    private fun findUser(id: Int): User = dataSource
+        .findById(id)
+        .orElseThrow { throw NoSuchElementException("User with id: $id could not be found") }
 }
