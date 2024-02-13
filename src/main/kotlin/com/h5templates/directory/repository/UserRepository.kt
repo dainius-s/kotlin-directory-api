@@ -6,4 +6,5 @@ import org.springframework.data.repository.PagingAndSortingRepository
 
 interface UserRepository: CrudRepository<User, Int>, PagingAndSortingRepository<User, Int> {
     fun findByEmail(email: String): User?
+    fun existsByEmail(email: String): Boolean
 }

@@ -1,7 +1,7 @@
 package com.h5templates.directory.controller
 
 import com.h5templates.directory.model.User
-import com.h5templates.directory.requests.user.UserCreateRequest
+import com.h5templates.directory.requests.user.CreateUserDTO
 import com.h5templates.directory.service.UserService
 import jakarta.validation.Valid
 import jakarta.validation.constraints.Min
@@ -37,7 +37,7 @@ class UserController(
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun createUser(@RequestBody @Valid user: User): User = userService.createUser(user)
+    fun createUser(@RequestBody @Valid user: CreateUserDTO): User = userService.createUser(user)
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
