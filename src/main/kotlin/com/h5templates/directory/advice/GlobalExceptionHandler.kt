@@ -62,4 +62,13 @@ class GlobalExceptionHandler {
 
         return ResponseEntity(errorResponse, HttpStatus.UNPROCESSABLE_ENTITY)
     }
+
+    @ExceptionHandler(NoSuchElementException::class)
+    fun handleNotFound(e: NoSuchElementException): ResponseEntity<String> =
+        ResponseEntity(e.message ?: "Resource not found", HttpStatus.NOT_FOUND)
+
+    @ExceptionHandler(IllegalArgumentException::class)
+    fun handleBadRequest(e: IllegalArgumentException): ResponseEntity<String> =
+        ResponseEntity(e.message ?: "Bad request", HttpStatus.BAD_REQUEST)
+
 }
