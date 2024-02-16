@@ -35,7 +35,7 @@ class UserController(
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    fun updateUser(@PathVariable @Valid @Min(1) id: Int, @RequestBody user: UpdateUserDTO): User {
+    fun updateUser(@PathVariable @Min(1) id: Int, @RequestBody user: UpdateUserDTO): User {
         user.id = id
         validationService.validate(user, "updateUserDTO")
 
