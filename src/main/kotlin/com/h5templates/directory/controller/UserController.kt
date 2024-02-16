@@ -2,6 +2,7 @@ package com.h5templates.directory.controller
 
 import com.h5templates.directory.model.User
 import com.h5templates.directory.requests.user.CreateUserDTO
+import com.h5templates.directory.requests.user.UpdateUserDTO
 import com.h5templates.directory.service.UserService
 import jakarta.validation.Valid
 import jakarta.validation.constraints.Min
@@ -32,7 +33,7 @@ class UserController(
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    fun updateUser(@PathVariable @Min(1) id: Int, @RequestBody @Valid user: User): User = userService.updateUser(id, user)
+    fun updateUser(@PathVariable @Min(1) id: Int, @RequestBody @Valid user: UpdateUserDTO): User = userService.updateUser(id, user)
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

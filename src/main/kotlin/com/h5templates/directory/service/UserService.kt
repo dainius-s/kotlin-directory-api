@@ -3,6 +3,7 @@ package com.h5templates.directory.service
 import com.h5templates.directory.model.User
 import com.h5templates.directory.repository.UserRepository
 import com.h5templates.directory.requests.user.CreateUserDTO
+import com.h5templates.directory.requests.user.UpdateUserDTO
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
@@ -24,7 +25,7 @@ class UserService(
         )
         return dataSource.save(user)
     }
-    fun updateUser(id: Int, user: User): User = dataSource.save(with(user) {
+    fun updateUser(id: Int, user: UpdateUserDTO): User = dataSource.save(with(user) {
         findUser(id).copy(
             name = name,
             email = email,
