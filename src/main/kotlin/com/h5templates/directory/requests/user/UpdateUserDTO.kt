@@ -3,16 +3,13 @@ package com.h5templates.directory.requests.user
 import com.h5templates.directory.repository.UserRepository
 import com.h5templates.directory.shared.validation.Unique
 import jakarta.validation.constraints.Email
-import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
 
 @Unique(repository = UserRepository::class, fieldName = "email")
 data class UpdateUserDTO(
-    @field:NotNull
-    @field:Min(1)
-    val id: Int,
+    var id: Int?,
 
     @field:NotEmpty
     @field:Size(max = 120)

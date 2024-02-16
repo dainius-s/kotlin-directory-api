@@ -4,6 +4,7 @@ import com.h5templates.directory.model.User
 import com.h5templates.directory.requests.user.CreateUserDTO
 import com.h5templates.directory.requests.user.UpdateUserDTO
 import com.h5templates.directory.service.UserService
+import com.h5templates.directory.shared.validation.ValidationService
 import jakarta.validation.Valid
 import jakarta.validation.constraints.Min
 import org.springframework.data.domain.PageRequest
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*
 @Validated
 @RequestMapping("/api/users")
 class UserController(
+    private val validationService: ValidationService,
     private val userService: UserService
 ) {
     @GetMapping
@@ -33,7 +35,12 @@ class UserController(
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    fun updateUser(@PathVariable @Min(1) id: Int, @RequestBody @Valid user: UpdateUserDTO): User = userService.updateUser(id, user)
+    fun updateUser(@PathVariable @Valid @Min(1) id: Int, @RequestBody user: UpdateUserDTO): User {
+        user.id = id
+        validationService.validate(user, "updateUserDTO")
+
+        return userService.updateUser(id, user)
+    }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

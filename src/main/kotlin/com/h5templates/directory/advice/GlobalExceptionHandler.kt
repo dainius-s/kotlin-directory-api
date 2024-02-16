@@ -1,14 +1,14 @@
 package com.h5templates.directory.advice
 
+import com.h5templates.directory.shared.validation.CustomValidationException
 import jakarta.validation.ConstraintViolationException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.validation.BindingResult
 import org.springframework.validation.FieldError
-import org.springframework.validation.ObjectError
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
-import java.util.function.Consumer
 
 data class ErrorResponse(
     val status: Int,
@@ -21,15 +21,18 @@ data class ErrorResponse(
 @ControllerAdvice
 class GlobalExceptionHandler {
 
-    @ExceptionHandler(MethodArgumentNotValidException::class)
-    fun handleEntityValidationException(exception: MethodArgumentNotValidException): ResponseEntity<ErrorResponse> {
+    @ExceptionHandler(value = [CustomValidationException::class, MethodArgumentNotValidException::class])
+    fun handleEntityValidationException(exception: Exception): ResponseEntity<ErrorResponse> {
         val errors = mutableMapOf<String, String>()
 
-        exception.bindingResult.allErrors.forEach(Consumer { error: ObjectError ->
-            val fieldName = (error as FieldError).field
-            val errorMessage = error.getDefaultMessage()
-            errors[fieldName] = errorMessage ?: "field is invalid"
-        })
+        when (exception) {
+            is CustomValidationException -> {
+                extractErrors(exception.bindingResult, errors)
+            }
+            is MethodArgumentNotValidException -> {
+                extractErrors(exception.bindingResult, errors)
+            }
+        }
 
         val message = errors.entries.joinToString(", ") { "${it.key}: ${it.value}" }
 
@@ -61,6 +64,14 @@ class GlobalExceptionHandler {
         )
 
         return ResponseEntity(errorResponse, HttpStatus.UNPROCESSABLE_ENTITY)
+    }
+
+    private fun extractErrors(bindingResult: BindingResult, errors: MutableMap<String, String>) {
+        bindingResult.allErrors.forEach { error ->
+            val fieldName = (error as FieldError).field
+            val errorMessage = error.getDefaultMessage()
+            errors[fieldName] = errorMessage ?: "field is invalid"
+        }
     }
 
     @ExceptionHandler(NoSuchElementException::class)
