@@ -16,19 +16,21 @@ class UserService(
     fun getUsers(pageable: Pageable): Page<User> = dataSource.findAll(pageable)
     fun getUser(id: Int): User = findUser(id)
     fun createUser(user: User): User = dataSource.save(user)
-    fun createUser(createUserDTO: CreateUserDTO): User {
-        val user = User(
-            name = createUserDTO.name,
-            email = createUserDTO.email,
-            verified = createUserDTO.verified,
-            active = createUserDTO.active,
+    fun createUser(user: CreateUserDTO): User {
+        val data = User(
+            name = user.name,
+            email = user.email,
+            phone = user.phone,
+            verified = user.verified,
+            active = user.active,
         )
-        return dataSource.save(user)
+        return dataSource.save(data)
     }
     fun updateUser(id: Int, user: UpdateUserDTO): User = dataSource.save(with(user) {
         findUser(id).copy(
             name = name,
             email = email,
+            phone = phone,
             verified = verified,
             active = active,
         )

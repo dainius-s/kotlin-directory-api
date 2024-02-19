@@ -42,7 +42,16 @@ internal class UserControllerTest @Autowired constructor(
 
         @BeforeEach
         fun setUp() {
-            val users = listOf(User(1, "John Doe", "john.doe@example.com", true, true))
+            val users = listOf(
+                User(
+                    1,
+                    "John Doe",
+                    "john.doe@example.com",
+                    "07722000001",
+                    true,
+                    true,
+                )
+            )
             val pageOfUsers = PageImpl(users)
             every { userRepository.findAll(any<Pageable>()) } returns pageOfUsers
         }
@@ -72,6 +81,7 @@ internal class UserControllerTest @Autowired constructor(
                     1,
                     "John Doe",
                     "john.doe@example.com",
+                    "07722000001",
                     true,
                     true
                 )
@@ -124,7 +134,13 @@ internal class UserControllerTest @Autowired constructor(
         @Test
         fun `should create the new user`() {
             // given
-            val payload = CreateUserDTO("Joe Biederman", "joe.biederman@example.com", false, true)
+            val payload = CreateUserDTO(
+                "Joe Biederman",
+                "joe.biederman@example.com",
+                "07722000001",
+                false,
+                true,
+            )
 
             // when
             val createUser = mockMvc.post(baseUrl) {
@@ -147,7 +163,13 @@ internal class UserControllerTest @Autowired constructor(
         @Test
         fun `should return Validation Error if user with given email already exist`() {
             // given
-            val payload = CreateUserDTO("John Smith", "john.smith@example.com", false, true)
+            val payload = CreateUserDTO(
+                "John Smith",
+                "john.smith@example.com",
+                "07722000001",
+                false,
+                true,
+            )
 
             // when
             val createDuplicateEmailUser = mockMvc.post(baseUrl) {
@@ -168,7 +190,14 @@ internal class UserControllerTest @Autowired constructor(
     inner class UpdateUser {
         @BeforeEach
         fun setUp() {
-            val existingUser = User(1, "Existing User", "existing@example.com", true, true)
+            val existingUser = User(
+                1,
+                "Existing User",
+                "existing@example.com",
+                "07722000001",
+                true,
+                true,
+            )
             every { userRepository.findById(1) } returns Optional.of(existingUser)
             every { userRepository.findById(2) } returns Optional.empty() // Update to use ID=2 for non-existing user
             every { userRepository.existsByEmailAndIdNot("updated@example.com", 1) } returns false
@@ -180,7 +209,15 @@ internal class UserControllerTest @Autowired constructor(
         fun `should update user with data provided`() {
             // given
             val id = 1
-            val updatedUser = User(id, "Updated User", "updated@example.com", false, true)
+            val updatedUser = User(
+                id,
+                "Updated User",
+                "updated@example.com",
+                "07722000001",
+                false,
+                true,
+
+                )
 
             // when
             val updateUser = mockMvc.put("$baseUrl/$id") {
@@ -202,7 +239,14 @@ internal class UserControllerTest @Autowired constructor(
         fun `should return Not Found if the user with id does not exist`() {
             // given
             val id = 2
-            val nonExistingUser = User(id, "Non-Existing User", "nonexisting@example.com", false, true)
+            val nonExistingUser = User(
+                id,
+                "Non-Existing User",
+                "nonexisting@example.com",
+                "07722000001",
+                false,
+                true,
+            )
 
             // when
             val updateNotExistingUser = mockMvc.put("$baseUrl/$id") {
@@ -223,7 +267,14 @@ internal class UserControllerTest @Autowired constructor(
     inner class DeleteUser {
         @BeforeEach
         fun setUp() {
-            val existingUser = User(1, "Existing User", "existing@example.com", true, true)
+            val existingUser = User(
+                1,
+                "Existing User",
+                "existing@example.com",
+                "07722000001",
+                true,
+                true,
+            )
             every { userRepository.findById(1) } returns Optional.of(existingUser)
             every { userRepository.findById(2) } returns Optional.empty()
             justRun { userRepository.delete(any<User>()) }

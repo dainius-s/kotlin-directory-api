@@ -1,5 +1,6 @@
 package com.h5templates.directory.feature.user.model
 
+import UKPhoneNumber
 import com.h5templates.directory.feature.user.repository.UserRepository
 import com.h5templates.directory.shared.validation.Unique
 import jakarta.validation.constraints.Email
@@ -17,6 +18,11 @@ data class CreateUserDTO(
     @field:Email
     @field:Size(max = 120)
     val email: String,
+
+    @field:NotEmpty
+    @field:Size(max = 13)
+    @UKPhoneNumber
+    val phone: String,
 
     @field:NotNull
     val verified: Boolean = false,

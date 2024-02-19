@@ -4,7 +4,6 @@ import com.h5templates.directory.feature.user.entity.User
 import com.h5templates.directory.feature.user.repository.UserRepository
 import com.h5templates.directory.feature.user.model.CreateUserDTO
 import com.h5templates.directory.feature.user.model.UpdateUserDTO
-import com.h5templates.directory.feature.user.service.UserService
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
@@ -41,6 +40,7 @@ class UserServiceTest {
             id,
             "Joe Biederman",
             "joe.biederman@example.com",
+            "07722000001",
             false,
             true,
         )
@@ -63,17 +63,19 @@ class UserServiceTest {
         val payload = CreateUserDTO(
             "Joe Biederman",
             "joe.biederman@example.com",
+            "07722000001",
             false,
             true,
         )
-        val userSlot = slot<User>()
         val createdUser = User(
             1,
             payload.name,
             payload.email,
+            payload.phone,
             payload.verified,
             payload.active,
         )
+        val userSlot = slot<User>()
         every { dataSource.save(capture(userSlot)) } returns createdUser
 
         // when
@@ -97,6 +99,7 @@ class UserServiceTest {
             id,
             "Existing Name",
             "existing@example.com",
+            "07722000001",
             true,
             true,
         )
@@ -104,6 +107,7 @@ class UserServiceTest {
             id,
             "Joe Biederman",
             "joe.biederman@example.com",
+            "07722000002",
             false,
             true
         )
@@ -117,6 +121,7 @@ class UserServiceTest {
             null,
             "Joe Biederman",
             "joe.biederman@example.com",
+            "07722000002",
             false,
             true,
         )
@@ -146,6 +151,7 @@ class UserServiceTest {
             id,
             "Existing Name",
             "existing@example.com",
+            "07722000001",
             true,
             true,
         )

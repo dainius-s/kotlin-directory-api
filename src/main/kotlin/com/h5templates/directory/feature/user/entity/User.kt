@@ -13,8 +13,11 @@ data class User(
     @Column(nullable = false, length = 120)
     val name: String,
 
-    @Column(nullable = false, length = 120, unique = true)
+    @Column(nullable = false, length = 250, unique = true)
     val email: String,
+
+    @Column(nullable = false, length = 13, unique = true)
+    val phone: String,
 
     @Column(nullable = false)
     val verified: Boolean = false,
