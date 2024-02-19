@@ -9,4 +9,7 @@ interface UserRepository: CrudRepository<User, Int>, PagingAndSortingRepository<
     fun existsByEmail(email: String): Boolean
     fun existsByEmailAndIdNot(email: String, id: Int): Boolean
 
+    fun existsByPhone(phone: String): Boolean
+    fun existsByPhoneAndIdNot(phone: String, id: Int): Boolean
+
 }

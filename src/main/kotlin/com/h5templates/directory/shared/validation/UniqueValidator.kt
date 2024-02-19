@@ -10,10 +10,12 @@ import org.slf4j.LoggerFactory
 import java.lang.reflect.InvocationTargetException
 import kotlin.reflect.KClass
 import kotlin.reflect.full.memberProperties
+import java.lang.annotation.Repeatable
 
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)
 @Constraint(validatedBy = [UniqueValidator::class])
+@Repeatable(UniqueConstraints::class)
 annotation class Unique(
     val message: String = "The value must be unique",
     val groups: Array<KClass<*>> = [],
@@ -59,17 +61,20 @@ class UniqueValidator : ConstraintValidator<Unique, Any?> {
                 return false // Invalid if the field value is essential and not found.
             }
 
+            val fieldNameCapitalized = fieldName.replaceFirstChar { it.uppercase() }
+            val idFieldNameCapitalized = idFieldName.replaceFirstChar { it.uppercase() }
+
             val isUnique = if (idValue != null) {
                 // Ensure the method signature matches the expected types (String and Int)
                 val method = repository.javaClass.getMethod(
-                    "existsByEmailAndIdNot",
+                    "existsBy${fieldNameCapitalized}And${idFieldNameCapitalized}Not",
                     String::class.java,
                     Int::class.java // Use javaObjectType for Int
                 )
                 !(method.invoke(repository, fieldValue, idValue) as Boolean)
             } else {
                 val method = repository.javaClass.getMethod(
-                    "existsByEmail",
+                    "existsBy${fieldNameCapitalized}",
                     String::class.java,
                 )
                 !(method.invoke(repository, fieldValue) as Boolean)
@@ -97,5 +102,15 @@ class UniqueValidator : ConstraintValidator<Unique, Any?> {
 
         // Optionally, return false or handle the validation error differently if an exception occurs
         return false
+    }
+}
+
+private fun capitalizeFirstLetter(str: String): String {
+    return str.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
+}
+
+private fun constructMethodName(base: String, vararg fields: String): String {
+    return fields.fold(base) { acc, field ->
+        acc + capitalizeFirstLetter(field)
     }
 }
