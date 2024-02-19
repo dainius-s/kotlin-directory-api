@@ -1,7 +1,7 @@
-package com.h5templates.directory.repository.mock
+package com.h5templates.directory.feature.user.repository.mock
 
-import com.h5templates.directory.repository.UserDataSource
-import com.h5templates.directory.model.User
+import com.h5templates.directory.feature.user.repository.UserDataSource
+import com.h5templates.directory.feature.user.entity.User
 import org.springframework.stereotype.Repository
 import java.lang.IllegalArgumentException
 

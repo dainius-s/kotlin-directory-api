@@ -1,6 +1,6 @@
-package com.h5templates.directory.repository
+package com.h5templates.directory.feature.user.repository
 
-import com.h5templates.directory.model.User
+import com.h5templates.directory.feature.user.entity.User
 
 interface UserDataSource {
     fun retrieveUsers(): Collection<User>

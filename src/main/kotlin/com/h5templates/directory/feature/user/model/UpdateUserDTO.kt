@@ -1,6 +1,6 @@
-package com.h5templates.directory.requests.user
+package com.h5templates.directory.feature.user.model
 
-import com.h5templates.directory.repository.UserRepository
+import com.h5templates.directory.feature.user.repository.UserRepository
 import com.h5templates.directory.shared.validation.Unique
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotEmpty

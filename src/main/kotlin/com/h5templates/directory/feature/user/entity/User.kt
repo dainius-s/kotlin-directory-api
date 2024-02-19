@@ -1,5 +1,5 @@
-package com.h5templates.directory.model
-import com.h5templates.directory.shared.AbstractModel
+package com.h5templates.directory.feature.user.entity
+import com.h5templates.directory.shared.model.AbstractModel
 import jakarta.persistence.*
 
 

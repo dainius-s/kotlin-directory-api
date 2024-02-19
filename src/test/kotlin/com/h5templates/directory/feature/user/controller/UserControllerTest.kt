@@ -1,9 +1,9 @@
-package com.h5templates.directory.controller
+package com.h5templates.directory.feature.user.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.h5templates.directory.model.User
-import com.h5templates.directory.repository.UserRepository
-import com.h5templates.directory.requests.user.CreateUserDTO
+import com.h5templates.directory.feature.user.entity.User
+import com.h5templates.directory.feature.user.repository.UserRepository
+import com.h5templates.directory.feature.user.model.CreateUserDTO
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.clearMocks
 import io.mockk.every

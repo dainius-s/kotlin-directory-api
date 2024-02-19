@@ -1,5 +1,6 @@
-package com.h5templates.directory.repository.mock
+package com.h5templates.directory.feature.user.mock
 
+import com.h5templates.directory.feature.user.repository.mock.MockUserDataSource
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName

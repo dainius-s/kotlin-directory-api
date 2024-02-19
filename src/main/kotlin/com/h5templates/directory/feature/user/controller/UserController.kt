@@ -1,9 +1,9 @@
-package com.h5templates.directory.controller
+package com.h5templates.directory.feature.user.controller
 
-import com.h5templates.directory.model.User
-import com.h5templates.directory.requests.user.CreateUserDTO
-import com.h5templates.directory.requests.user.UpdateUserDTO
-import com.h5templates.directory.service.UserService
+import com.h5templates.directory.feature.user.entity.User
+import com.h5templates.directory.feature.user.model.CreateUserDTO
+import com.h5templates.directory.feature.user.model.UpdateUserDTO
+import com.h5templates.directory.feature.user.service.UserService
 import com.h5templates.directory.shared.validation.ValidationService
 import jakarta.validation.Valid
 import jakarta.validation.constraints.Min

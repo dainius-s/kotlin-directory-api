@@ -1,9 +1,10 @@
-package com.h5templates.directory.service
+package com.h5templates.directory.feature.user.service
 
-import com.h5templates.directory.model.User
-import com.h5templates.directory.repository.UserRepository
-import com.h5templates.directory.requests.user.CreateUserDTO
-import com.h5templates.directory.requests.user.UpdateUserDTO
+import com.h5templates.directory.feature.user.entity.User
+import com.h5templates.directory.feature.user.repository.UserRepository
+import com.h5templates.directory.feature.user.model.CreateUserDTO
+import com.h5templates.directory.feature.user.model.UpdateUserDTO
+import com.h5templates.directory.feature.user.service.UserService
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
