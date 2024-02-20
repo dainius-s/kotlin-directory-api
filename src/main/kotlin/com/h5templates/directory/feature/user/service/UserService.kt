@@ -21,6 +21,7 @@ class UserService(
             name = user.name,
             email = user.email,
             phone = user.phone,
+            password = user.password,
             verified = user.verified,
             active = user.active,
         )

@@ -1,4 +1,5 @@
 package com.h5templates.directory.feature.user.entity
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.h5templates.directory.shared.model.AbstractModel
 import jakarta.persistence.*
 
@@ -18,6 +19,10 @@ data class User(
 
     @Column(nullable = false, length = 13, unique = true)
     val phone: String,
+
+    @Column(nullable = false, length = 250)
+    @JsonIgnore
+    val password: String,
 
     @Column(nullable = false)
     val verified: Boolean = false,

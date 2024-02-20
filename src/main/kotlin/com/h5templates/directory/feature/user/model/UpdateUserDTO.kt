@@ -29,7 +29,7 @@ data class UpdateUserDTO(
 
     @field:NotEmpty
     @field:Size(max = 13)
-    @UKPhoneNumber
+    @field:UKPhoneNumber
     val phone: String,
 
     @field:NotNull
