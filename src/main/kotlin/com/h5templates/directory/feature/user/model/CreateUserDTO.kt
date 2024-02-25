@@ -1,7 +1,7 @@
-package com.h5templates.directory.feature.user.model
+package com.h5templates.directory.user.model
 
 import UKPhoneNumber
-import com.h5templates.directory.feature.user.repository.UserRepository
+import com.h5templates.directory.user.repository.UserRepository
 import com.h5templates.directory.shared.validation.FieldsValueMatch
 import com.h5templates.directory.shared.validation.PasswordStrength
 import com.h5templates.directory.shared.validation.Unique

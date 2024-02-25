@@ -1,9 +1,10 @@
 package com.h5templates.directory.feature.user.service
 
-import com.h5templates.directory.feature.user.entity.User
-import com.h5templates.directory.feature.user.repository.UserRepository
-import com.h5templates.directory.feature.user.model.CreateUserDTO
-import com.h5templates.directory.feature.user.model.UpdateUserDTO
+import com.h5templates.directory.user.entity.User
+import com.h5templates.directory.user.repository.UserRepository
+import com.h5templates.directory.user.model.CreateUserDTO
+import com.h5templates.directory.user.model.UpdateUserDTO
+import com.h5templates.directory.user.service.UserService
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
@@ -41,6 +42,7 @@ class UserServiceTest {
             "Joe Biederman",
             "joe.biederman@example.com",
             "07722000001",
+            "labas789",
             false,
             true,
         )
@@ -64,6 +66,8 @@ class UserServiceTest {
             "Joe Biederman",
             "joe.biederman@example.com",
             "07722000001",
+            "labas789",
+            "labas789",
             false,
             true,
         )
@@ -72,6 +76,7 @@ class UserServiceTest {
             payload.name,
             payload.email,
             payload.phone,
+            payload.password,
             payload.verified,
             payload.active,
         )
@@ -100,6 +105,7 @@ class UserServiceTest {
             "Existing Name",
             "existing@example.com",
             "07722000001",
+            "labas789",
             true,
             true,
         )
@@ -108,6 +114,7 @@ class UserServiceTest {
             "Joe Biederman",
             "joe.biederman@example.com",
             "07722000002",
+            "labas789",
             false,
             true
         )
@@ -152,6 +159,7 @@ class UserServiceTest {
             "Existing Name",
             "existing@example.com",
             "07722000001",
+            "labas789",
             true,
             true,
         )

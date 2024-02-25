@@ -1,9 +1,9 @@
 package com.h5templates.directory.feature.user.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.h5templates.directory.feature.user.entity.User
-import com.h5templates.directory.feature.user.repository.UserRepository
-import com.h5templates.directory.feature.user.model.CreateUserDTO
+import com.h5templates.directory.user.entity.User
+import com.h5templates.directory.user.repository.UserRepository
+import com.h5templates.directory.user.model.CreateUserDTO
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.clearMocks
 import io.mockk.every
@@ -48,6 +48,7 @@ internal class UserControllerTest @Autowired constructor(
                     "John Doe",
                     "john.doe@example.com",
                     "07722000001",
+                    "labas789",
                     true,
                     true,
                 )
@@ -82,6 +83,7 @@ internal class UserControllerTest @Autowired constructor(
                     "John Doe",
                     "john.doe@example.com",
                     "07722000001",
+                    "labas789",
                     true,
                     true
                 )
@@ -138,6 +140,8 @@ internal class UserControllerTest @Autowired constructor(
                 "Joe Biederman",
                 "joe.biederman@example.com",
                 "07722000001",
+                "labas789",
+                "labas789",
                 false,
                 true,
             )
@@ -167,6 +171,8 @@ internal class UserControllerTest @Autowired constructor(
                 "John Smith",
                 "john.smith@example.com",
                 "07722000001",
+                "labas789",
+                "labas789",
                 false,
                 true,
             )
@@ -195,6 +201,7 @@ internal class UserControllerTest @Autowired constructor(
                 "Existing User",
                 "existing@example.com",
                 "07722000001",
+                "labas789",
                 true,
                 true,
             )
@@ -214,6 +221,7 @@ internal class UserControllerTest @Autowired constructor(
                 "Updated User",
                 "updated@example.com",
                 "07722000001",
+                "labas789",
                 false,
                 true,
 
@@ -244,6 +252,7 @@ internal class UserControllerTest @Autowired constructor(
                 "Non-Existing User",
                 "nonexisting@example.com",
                 "07722000001",
+                "labas789",
                 false,
                 true,
             )
@@ -272,6 +281,7 @@ internal class UserControllerTest @Autowired constructor(
                 "Existing User",
                 "existing@example.com",
                 "07722000001",
+                "labas789",
                 true,
                 true,
             )

@@ -1,5 +1,6 @@
-package com.h5templates.directory.feature.user.entity
+package com.h5templates.directory.user.entity
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.h5templates.directory.feature.role.entity.Role
 import com.h5templates.directory.shared.model.AbstractModel
 import jakarta.persistence.*
 
@@ -28,5 +29,13 @@ data class User(
     val verified: Boolean = false,
 
     @Column(nullable = false)
-    val active: Boolean = false
-): AbstractModel
+    val active: Boolean = false,
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    @JoinTable(
+        name = "user_roles",
+        joinColumns = [JoinColumn(name = "user_id")],
+        inverseJoinColumns = [JoinColumn(name = "role_id")]
+    )
+    var roles: Set<Role> = HashSet()
+): AbstractModel()

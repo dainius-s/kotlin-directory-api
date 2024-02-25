@@ -1,6 +1,6 @@
-package com.h5templates.directory.feature.user.repository
+package com.h5templates.directory.user.repository
 
-import com.h5templates.directory.feature.user.entity.User
+import com.h5templates.directory.user.entity.User
 import org.springframework.data.repository.CrudRepository
 import org.springframework.data.repository.PagingAndSortingRepository
 
