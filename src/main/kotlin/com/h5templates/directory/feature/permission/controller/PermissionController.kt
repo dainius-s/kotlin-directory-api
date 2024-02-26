@@ -15,7 +15,4 @@ class PermissionController(
     @GetMapping
     fun getPermissions(): Iterable<Permission> = dataService.getPermissions()
 
-    @GetMapping("/{id}")
-    fun getPermission(@PathVariable id: Int) = dataService.getPermission(id)
-
 }

@@ -14,8 +14,4 @@ class RoleController(
 ) {
     @GetMapping
     fun getRoles(): Iterable<Role> = roleService.getRoles()
-
-    @GetMapping("/{id}")
-    fun getRole(@PathVariable id: Int) = roleService.getRole(id)
-
 }
