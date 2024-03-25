@@ -39,6 +39,10 @@ class UserService(
     })
 
     fun deleteUser(id: Int): Unit = dataSource.delete(findUser(id))
+
+    fun findByEmail(email: String): User? = dataSource
+        .findByEmail(email)
+
     private fun findUser(id: Int): User = dataSource
         .findById(id)
         .orElseThrow { throw NoSuchElementException("User with id: $id could not be found") }

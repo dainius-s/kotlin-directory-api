@@ -37,7 +37,7 @@ class UserController(
     @ResponseStatus(HttpStatus.OK)
     fun updateUser(@PathVariable @Min(1) id: Int, @RequestBody user: UpdateUserDTO): User {
         user.id = id
-        validationService.validate(user, "updateUserDTO")
+        validationService.validate(user, "UpdateUserDTO")
 
         return userService.updateUser(id, user)
     }

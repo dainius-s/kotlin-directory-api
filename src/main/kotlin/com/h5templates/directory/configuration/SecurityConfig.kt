@@ -39,7 +39,7 @@ class SecurityConfig(
             .csrf { csrf -> csrf.disable() } // Disable CSRF
             .sessionManagement { session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS) } // No session will be created or used by spring security
             .authorizeRequests { auth ->
-                auth.requestMatchers(AntPathRequestMatcher("/api/**")).permitAll() // Permit all requests to /api/**
+                auth.requestMatchers(AntPathRequestMatcher("/api/auth/**")).permitAll() // Permit all requests to /api/**
                     .anyRequest().authenticated() // All other requests need to be authenticated
             }
             .addFilterBefore(JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter::class.java) // Add JWT token filter
