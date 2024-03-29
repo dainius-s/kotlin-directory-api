@@ -31,11 +31,7 @@ data class User(
     @Column(nullable = false)
     val active: Boolean = false,
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
-    @JoinTable(
-        name = "user_roles",
-        joinColumns = [JoinColumn(name = "user_id")],
-        inverseJoinColumns = [JoinColumn(name = "role_id")]
-    )
-    val roles: Set<Role> = HashSet()
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "role_id", nullable = false)
+    val role: Role,
 ): AbstractModel()

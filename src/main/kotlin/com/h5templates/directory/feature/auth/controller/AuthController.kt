@@ -3,8 +3,9 @@ package com.h5templates.directory.feature.auth.controller
 import com.h5templates.directory.feature.auth.model.LoginRequest
 import com.h5templates.directory.feature.auth.model.RegisterRequest
 import com.h5templates.directory.feature.auth.model.TokenResponse
+import com.h5templates.directory.feature.role.model.RoleType
+import com.h5templates.directory.feature.role.service.RoleService
 import com.h5templates.directory.shared.auth.JwtTokenProvider
-import com.h5templates.directory.shared.validation.ValidationService
 import com.h5templates.directory.user.entity.User
 import com.h5templates.directory.user.model.CreateUserDTO
 import com.h5templates.directory.user.service.UserService
@@ -21,8 +22,8 @@ import org.springframework.web.bind.annotation.*
 @Validated
 @RequestMapping("/api/auth")
 class AuthController @Autowired constructor(
-    private val validationService: ValidationService,
     private val userService: UserService,
+    private val roleService: RoleService,
     private val authenticationManager: AuthenticationManager,
     private val jwtTokenProvider: JwtTokenProvider
 ) {
@@ -30,6 +31,7 @@ class AuthController @Autowired constructor(
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
     fun registerUser(@RequestBody @Valid registerRequest: RegisterRequest): User {
+        val role = roleService.getRole(RoleType.SERVICE_PROVIDER.id)
 
         val newUserDTO = CreateUserDTO(
             name = registerRequest.name,
@@ -39,7 +41,7 @@ class AuthController @Autowired constructor(
             password_confirm = registerRequest.password_confirm,
             verified = false,
             active = true,
-//            roles = setOf() // Assign default role, assuming you have a method or service to fetch default roles
+            role = role,
         )
 
         return userService.createUser(newUserDTO)
@@ -57,7 +59,7 @@ class AuthController @Autowired constructor(
         val user = userService.findByEmail(email)
             ?: throw UsernameNotFoundException("User not found with email: $email")
 
-        val token = jwtTokenProvider.createToken(user.email, user.roles.map { it.name })
+        val token = jwtTokenProvider.createToken(user.email, user.role.permissions.map { it.name })
 
         return TokenResponse(token)
     }

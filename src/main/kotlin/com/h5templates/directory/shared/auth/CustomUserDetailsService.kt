@@ -18,10 +18,8 @@ class CustomUserDetailsService(
         val user = userRepository.findByEmail(username)
             ?: throw UsernameNotFoundException("User not found: $username")
 
-        val authorities = user.roles.flatMap { role ->
-            role.permissions.map { permission ->
-                SimpleGrantedAuthority(permission.name)
-            }
+        val authorities = user.role.permissions.map { permission ->
+            SimpleGrantedAuthority(permission.name)
         }.toSet()
 
         // Here, 'User' refers to 'org.springframework.security.core.userdetails.User'

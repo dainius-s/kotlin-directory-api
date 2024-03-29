@@ -10,9 +10,9 @@ class RoleService(
     private val dataSource: RoleRepository,
 ) {
     fun getRoles(): Iterable<Role> = dataSource.findAll()
-    fun getRole(id: Int): Role = findRole(id)
+    fun getRole(id: Int): Role = findById(id)
 
-    private fun findRole(id: Int): Role = dataSource
+    private fun findById(id: Int): Role = dataSource
         .findById(id)
         .orElseThrow { throw NoSuchElementException("Role with id: $id could not be found") }
 }

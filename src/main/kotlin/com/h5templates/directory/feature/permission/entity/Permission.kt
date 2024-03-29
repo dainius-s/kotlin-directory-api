@@ -10,6 +10,6 @@ data class Permission(
     @GeneratedValue(strategy = GenerationType.AUTO)
     override val id: Int = 0,
 
-    @Column(nullable = false, length = 120)
+    @Column(nullable = false, length = 120, unique = true)
     val name: String,
 ): AbstractModel()

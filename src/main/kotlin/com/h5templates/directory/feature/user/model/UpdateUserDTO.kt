@@ -1,6 +1,7 @@
 package com.h5templates.directory.user.model
 
 import UKPhoneNumber
+import com.h5templates.directory.shared.model.AbstractModel
 import com.h5templates.directory.user.repository.UserRepository
 import com.h5templates.directory.shared.validation.Unique
 import com.h5templates.directory.shared.validation.UniqueConstraints
@@ -31,6 +32,9 @@ data class UpdateUserDTO(
     @field:Size(max = 13)
     @field:UKPhoneNumber
     val phone: String,
+
+    @field:NotNull
+    val role: AbstractModel,
 
     @field:NotNull
     val verified: Boolean = false,

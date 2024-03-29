@@ -22,14 +22,27 @@ class JwtTokenProvider {
 
     private lateinit var key: SecretKey
 
-    @Value("\${security.jwt.token.expire-length:3600000}") // 1h in milliseconds
-
-    private val validityInMilliseconds: Long = 3600000 // 1h in milliseconds
+    @Value("\${security.jwt.token.expire-length:3600000}") // 1 hour in milliseconds
+    private val validityInMilliseconds: Long = 3600000
 
     @PostConstruct
     fun init() {
         val decodedKey = Base64.getDecoder().decode(base64Secret)
         key = Keys.hmacShaKeyFor(decodedKey)
+    }
+
+    // Generate a JWT token with permissions
+    fun createToken(username: String?, permissions: List<String>): String {
+        val claims = Jwts.claims().setSubject(username)
+        claims["auth"] = permissions // Storing permissions in the auth claim
+        val now = Date()
+        val validity = Date(now.time + validityInMilliseconds)
+        return Jwts.builder()
+            .setClaims(claims)
+            .setIssuedAt(now)
+            .setExpiration(validity)
+            .signWith(key, SignatureAlgorithm.HS256)
+            .compact()
     }
 
     // Validate the JWT Token
@@ -42,12 +55,12 @@ class JwtTokenProvider {
         }
     }
 
-    // Get Authentication from the JWT Token
+    // Get Authentication from the JWT Token using permissions
     fun getAuthentication(token: String, request: HttpServletRequest): Authentication {
         val claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).body
         val username = claims.subject
-        val authoritiesClaim = claims["auth"] as List<String>? // Assuming roles are stored as a list of strings
-        val authorities = authoritiesClaim?.map { SimpleGrantedAuthority(it) } ?: listOf()
+        val permissionsClaim = claims["auth"] as List<String>? // Permissions are now expected here
+        val authorities = permissionsClaim?.map { SimpleGrantedAuthority(it) } ?: listOf()
 
         val authentication = UsernamePasswordAuthenticationToken(username, null, authorities)
         authentication.details = WebAuthenticationDetailsSource().buildDetails(request)
@@ -58,19 +71,5 @@ class JwtTokenProvider {
     // Extract the username from the JWT token
     fun getUsername(token: String?): String {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).body.subject
-    }
-
-    // Generate a JWT token
-    fun createToken(username: String?, roles: List<String> = listOf()): String {
-        val claims = Jwts.claims().setSubject(username)
-        claims["auth"] = roles
-        val now = Date()
-        val validity = Date(now.time + validityInMilliseconds)
-        return Jwts.builder()
-            .setClaims(claims)
-            .setIssuedAt(now)
-            .setExpiration(validity)
-            .signWith(key, SignatureAlgorithm.HS256)
-            .compact()
     }
 }
