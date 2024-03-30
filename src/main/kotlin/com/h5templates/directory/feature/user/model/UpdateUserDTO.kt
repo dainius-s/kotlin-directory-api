@@ -33,7 +33,7 @@ data class UpdateUserDTO(
     val phone: String,
 
     @field:NotNull
-    val role: EntityDTO,
+    val role: BaseEntityDTO,
 
     @field:NotNull
     val verified: Boolean = false,

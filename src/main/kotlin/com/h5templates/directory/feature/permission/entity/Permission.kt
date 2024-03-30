@@ -1,5 +1,5 @@
 package com.h5templates.directory.feature.permission.entity
-import com.h5templates.directory.shared.model.AbstractModel
+import com.h5templates.directory.user.model.BaseEntity
 import jakarta.persistence.*
 
 
@@ -12,4 +12,4 @@ data class Permission(
 
     @Column(nullable = false, length = 120, unique = true)
     val name: String,
-): AbstractModel()
+): BaseEntity(id)

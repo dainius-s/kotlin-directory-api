@@ -7,7 +7,7 @@ import com.h5templates.directory.feature.role.model.RoleType
 import com.h5templates.directory.shared.auth.JwtTokenProvider
 import com.h5templates.directory.user.entity.User
 import com.h5templates.directory.user.model.CreateUserDTO
-import com.h5templates.directory.user.model.EntityDTO
+import com.h5templates.directory.user.model.BaseEntityDTO
 import com.h5templates.directory.user.service.UserService
 import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
@@ -37,7 +37,7 @@ class AuthController @Autowired constructor(
             phone = registerRequest.phone,
             password = registerRequest.password,
             password_confirm = registerRequest.password_confirm,
-            role = EntityDTO(RoleType.SUPER_ADMIN.id),
+            role = BaseEntityDTO(RoleType.SUPER_ADMIN.id),
             verified = false,
             active = true,
         )

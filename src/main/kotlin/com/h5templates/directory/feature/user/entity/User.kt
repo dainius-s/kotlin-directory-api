@@ -1,7 +1,7 @@
 package com.h5templates.directory.user.entity
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.h5templates.directory.feature.role.entity.Role
-import com.h5templates.directory.shared.model.AbstractModel
+import com.h5templates.directory.user.model.BaseEntity
 import jakarta.persistence.*
 
 
@@ -34,4 +34,4 @@ data class User(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id", nullable = false)
     val role: Role,
-): AbstractModel()
+): BaseEntity(id)

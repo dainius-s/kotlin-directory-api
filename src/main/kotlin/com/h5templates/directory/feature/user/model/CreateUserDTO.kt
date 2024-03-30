@@ -42,7 +42,7 @@ data class CreateUserDTO(
     val password_confirm: String,
 
     @field:NotNull
-    val role: EntityDTO,
+    val role: BaseEntityDTO,
 
     @field:NotNull
     val verified: Boolean = false,
