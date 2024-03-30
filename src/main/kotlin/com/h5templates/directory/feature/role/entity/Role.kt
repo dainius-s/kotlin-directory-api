@@ -10,8 +10,7 @@ import jakarta.persistence.*
 @Table(name = "roles")
 data class Role(
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    override val id: Int = 0,
+    val id: Int,
 
     @Column(nullable = false, length = 120, unique = true)
     val name: String,
@@ -23,4 +22,4 @@ data class Role(
     @OneToMany(mappedBy = "role")
     @JsonIgnore
     var users: Set<User> = HashSet()
-): AbstractModel()
+)
