@@ -37,7 +37,7 @@ class AuthController @Autowired constructor(
             phone = registerRequest.phone,
             password = registerRequest.password,
             password_confirm = registerRequest.password_confirm,
-            role = EntityDTO(RoleType.ADMIN.id),
+            role = EntityDTO(RoleType.SUPER_ADMIN.id),
             verified = false,
             active = true,
         )
