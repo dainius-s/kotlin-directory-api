@@ -1,6 +1,5 @@
 package com.h5templates.directory.feature.role.entity
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.jackson.annotation.JsonProperty
 import com.h5templates.directory.feature.permission.entity.Permission
 import com.h5templates.directory.shared.model.AbstractModel
 import com.h5templates.directory.user.entity.User
@@ -15,7 +14,6 @@ data class Role(
     override val id: Int = 0,
 
     @Column(nullable = false, length = 120, unique = true)
-    @JsonProperty("id")
     val name: String,
 
     @ManyToMany(fetch = FetchType.LAZY)

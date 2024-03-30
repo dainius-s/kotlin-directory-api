@@ -4,10 +4,10 @@ import com.h5templates.directory.feature.auth.model.LoginRequest
 import com.h5templates.directory.feature.auth.model.RegisterRequest
 import com.h5templates.directory.feature.auth.model.TokenResponse
 import com.h5templates.directory.feature.role.model.RoleType
-import com.h5templates.directory.feature.role.service.RoleService
 import com.h5templates.directory.shared.auth.JwtTokenProvider
 import com.h5templates.directory.user.entity.User
 import com.h5templates.directory.user.model.CreateUserDTO
+import com.h5templates.directory.user.model.EntityDTO
 import com.h5templates.directory.user.service.UserService
 import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/auth")
 class AuthController @Autowired constructor(
     private val userService: UserService,
-    private val roleService: RoleService,
     private val authenticationManager: AuthenticationManager,
     private val jwtTokenProvider: JwtTokenProvider
 ) {
@@ -31,7 +30,6 @@ class AuthController @Autowired constructor(
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
     fun registerUser(@RequestBody @Valid registerRequest: RegisterRequest): User {
-        val role = roleService.getRole(RoleType.SERVICE_PROVIDER.id)
 
         val newUserDTO = CreateUserDTO(
             name = registerRequest.name,
@@ -39,9 +37,9 @@ class AuthController @Autowired constructor(
             phone = registerRequest.phone,
             password = registerRequest.password,
             password_confirm = registerRequest.password_confirm,
+            role = EntityDTO(RoleType.ADMIN.id),
             verified = false,
             active = true,
-            role = role,
         )
 
         return userService.createUser(newUserDTO)

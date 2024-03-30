@@ -1,7 +1,6 @@
 package com.h5templates.directory.user.model
 
 import UKPhoneNumber
-import com.h5templates.directory.shared.model.AbstractModel
 import com.h5templates.directory.user.repository.UserRepository
 import com.h5templates.directory.shared.validation.FieldsValueMatch
 import com.h5templates.directory.shared.validation.PasswordStrength
@@ -43,7 +42,7 @@ data class CreateUserDTO(
     val password_confirm: String,
 
     @field:NotNull
-    val role: AbstractModel,
+    val role: EntityDTO,
 
     @field:NotNull
     val verified: Boolean = false,
