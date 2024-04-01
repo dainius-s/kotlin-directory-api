@@ -1,6 +1,9 @@
 package com.h5templates.directory.feature.user.service
 
+import com.h5templates.directory.feature.role.model.RoleType
+import com.h5templates.directory.feature.role.service.RoleService
 import com.h5templates.directory.user.entity.User
+import com.h5templates.directory.user.model.BaseEntityDTO
 import com.h5templates.directory.user.repository.UserRepository
 import com.h5templates.directory.user.model.CreateUserDTO
 import com.h5templates.directory.user.model.UpdateUserDTO
@@ -12,12 +15,15 @@ import io.mockk.verify
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.springframework.data.domain.PageRequest
+import org.springframework.security.crypto.password.PasswordEncoder
 import java.util.*
 
 class UserServiceTest {
 
     private val dataSource: UserRepository = mockk(relaxed = true)
-    private val userService = UserService(dataSource)
+    private val roleService: RoleService = mockk(relaxed = true)
+    private val passwordEncoder: PasswordEncoder = mockk(relaxed = true)
+    private val userService = UserService(dataSource, roleService, passwordEncoder)
 
     @Test
     fun `should call its data source to retrieve users`() {
@@ -37,12 +43,14 @@ class UserServiceTest {
     fun `should call its data source to retrieve user with id`() {
         //given
         val id = 1
+        val roleId = RoleType.SUPER_ADMIN.id
         val expectedUser = User(
             id,
             "Joe Biederman",
             "joe.biederman@example.com",
             "07722000001",
             "labas789",
+            roleService.getRole(roleId),
             false,
             true,
         )
@@ -62,12 +70,14 @@ class UserServiceTest {
     @Test
     fun `should call its data source to create user with data provided`() {
         //given
+        val roleId = RoleType.SUPER_ADMIN.id
         val payload = CreateUserDTO(
             "Joe Biederman",
             "joe.biederman@example.com",
             "07722000001",
             "labas789",
             "labas789",
+            BaseEntityDTO(roleId),
             false,
             true,
         )
@@ -77,6 +87,7 @@ class UserServiceTest {
             payload.email,
             payload.phone,
             payload.password,
+            roleService.getRole(roleId),
             payload.verified,
             payload.active,
         )
@@ -100,12 +111,14 @@ class UserServiceTest {
     fun `should call its data source to update user with data provided`() {
         // given
         val id = 1
+        val roleId = RoleType.SUPER_ADMIN.id
         val existingUser = User(
             id,
             "Existing Name",
             "existing@example.com",
             "07722000001",
             "labas789",
+            roleService.getRole(roleId),
             true,
             true,
         )
@@ -115,6 +128,7 @@ class UserServiceTest {
             "joe.biederman@example.com",
             "07722000002",
             "labas789",
+            roleService.getRole(roleId),
             false,
             true
         )
@@ -129,6 +143,7 @@ class UserServiceTest {
             "Joe Biederman",
             "joe.biederman@example.com",
             "07722000002",
+            BaseEntityDTO(roleId),
             false,
             true,
         )
@@ -154,12 +169,14 @@ class UserServiceTest {
     fun `should call it's data source to delete user with id`() {
         // given
         val id = 1
+        val roleId = RoleType.SUPER_ADMIN.id
         val existingUser = User(
             id,
             "Existing Name",
             "existing@example.com",
             "07722000001",
             "labas789",
+            roleService.getRole(roleId),
             true,
             true,
         )

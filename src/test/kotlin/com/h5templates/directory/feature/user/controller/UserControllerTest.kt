@@ -1,13 +1,17 @@
 package com.h5templates.directory.feature.user.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.h5templates.directory.feature.role.model.RoleType
+import com.h5templates.directory.feature.role.service.RoleService
 import com.h5templates.directory.user.entity.User
+import com.h5templates.directory.user.model.BaseEntityDTO
 import com.h5templates.directory.user.repository.UserRepository
 import com.h5templates.directory.user.model.CreateUserDTO
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.clearMocks
 import io.mockk.every
 import io.mockk.justRun
+import io.mockk.mockk
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -30,6 +34,8 @@ internal class UserControllerTest @Autowired constructor(
     @MockkBean
     lateinit var userRepository: UserRepository
 
+    private val roleService: RoleService = mockk(relaxed = true)
+
     @BeforeEach
     fun setup() {
         clearMocks(userRepository)
@@ -42,6 +48,7 @@ internal class UserControllerTest @Autowired constructor(
 
         @BeforeEach
         fun setUp() {
+            val roleId = RoleType.SUPER_ADMIN.id
             val users = listOf(
                 User(
                     1,
@@ -49,6 +56,7 @@ internal class UserControllerTest @Autowired constructor(
                     "john.doe@example.com",
                     "07722000001",
                     "labas789",
+                    roleService.getRole(roleId),
                     true,
                     true,
                 )
@@ -77,6 +85,7 @@ internal class UserControllerTest @Autowired constructor(
     inner class GetUser {
         @BeforeEach
         fun setUp() {
+            val roleId = RoleType.SUPER_ADMIN.id
             every { userRepository.findById(1) } returns Optional.of(
                 User(
                     1,
@@ -84,6 +93,7 @@ internal class UserControllerTest @Autowired constructor(
                     "john.doe@example.com",
                     "07722000001",
                     "labas789",
+                    roleService.getRole(roleId),
                     true,
                     true
                 )
@@ -136,12 +146,14 @@ internal class UserControllerTest @Autowired constructor(
         @Test
         fun `should create the new user`() {
             // given
+            val roleId = RoleType.SUPER_ADMIN.id
             val payload = CreateUserDTO(
                 "Joe Biederman",
                 "joe.biederman@example.com",
                 "07722000001",
                 "labas789",
                 "labas789",
+                BaseEntityDTO(roleId),
                 false,
                 true,
             )
@@ -167,12 +179,14 @@ internal class UserControllerTest @Autowired constructor(
         @Test
         fun `should return Validation Error if user with given email already exist`() {
             // given
+            val roleId = RoleType.SUPER_ADMIN.id
             val payload = CreateUserDTO(
                 "John Smith",
                 "john.smith@example.com",
                 "07722000001",
                 "labas789",
                 "labas789",
+                BaseEntityDTO(roleId),
                 false,
                 true,
             )
@@ -196,12 +210,14 @@ internal class UserControllerTest @Autowired constructor(
     inner class UpdateUser {
         @BeforeEach
         fun setUp() {
+            val roleId = RoleType.SUPER_ADMIN.id
             val existingUser = User(
                 1,
                 "Existing User",
                 "existing@example.com",
                 "07722000001",
                 "labas789",
+                roleService.getRole(roleId),
                 true,
                 true,
             )
@@ -216,12 +232,14 @@ internal class UserControllerTest @Autowired constructor(
         fun `should update user with data provided`() {
             // given
             val id = 1
+            val roleId = RoleType.SUPER_ADMIN.id
             val updatedUser = User(
                 id,
                 "Updated User",
                 "updated@example.com",
                 "07722000001",
                 "labas789",
+                roleService.getRole(roleId),
                 false,
                 true,
 
@@ -247,12 +265,14 @@ internal class UserControllerTest @Autowired constructor(
         fun `should return Not Found if the user with id does not exist`() {
             // given
             val id = 2
+            val roleId = RoleType.SUPER_ADMIN.id
             val nonExistingUser = User(
                 id,
                 "Non-Existing User",
                 "nonexisting@example.com",
                 "07722000001",
                 "labas789",
+                roleService.getRole(roleId),
                 false,
                 true,
             )
@@ -276,12 +296,14 @@ internal class UserControllerTest @Autowired constructor(
     inner class DeleteUser {
         @BeforeEach
         fun setUp() {
+            val roleId = RoleType.SUPER_ADMIN.id
             val existingUser = User(
                 1,
                 "Existing User",
                 "existing@example.com",
                 "07722000001",
                 "labas789",
+                roleService.getRole(roleId),
                 true,
                 true,
             )

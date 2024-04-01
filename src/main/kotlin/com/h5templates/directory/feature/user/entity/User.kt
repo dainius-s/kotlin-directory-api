@@ -25,13 +25,13 @@ data class User(
     @JsonIgnore
     val password: String,
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "role_id", nullable = false)
+    val role: Role,
+
     @Column(nullable = false)
     val verified: Boolean = false,
 
     @Column(nullable = false)
     val active: Boolean = false,
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "role_id", nullable = false)
-    val role: Role,
 ): BaseEntity(id)
