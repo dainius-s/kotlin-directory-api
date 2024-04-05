@@ -3,6 +3,7 @@ package com.h5templates.directory.feature.auth.controller
 import com.h5templates.directory.feature.auth.model.LoginRequest
 import com.h5templates.directory.feature.auth.model.RegisterRequest
 import com.h5templates.directory.feature.auth.model.TokenResponse
+import com.h5templates.directory.feature.email.service.EmailService
 import com.h5templates.directory.feature.role.model.RoleType
 import com.h5templates.directory.shared.auth.JwtTokenProvider
 import com.h5templates.directory.user.entity.User
@@ -17,6 +18,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
+import org.thymeleaf.context.Context
 
 @RestController
 @Validated
@@ -24,7 +26,8 @@ import org.springframework.web.bind.annotation.*
 class AuthController @Autowired constructor(
     private val userService: UserService,
     private val authenticationManager: AuthenticationManager,
-    private val jwtTokenProvider: JwtTokenProvider
+    private val jwtTokenProvider: JwtTokenProvider,
+    private val emailService: EmailService,
 ) {
 
     @PostMapping("/signup")
@@ -41,6 +44,16 @@ class AuthController @Autowired constructor(
             verified = false,
             active = true,
         )
+
+        val context = Context().apply {
+            setVariable("logoUrl", "http://example.com/logo.png")
+            setVariable("title", "Welcome!")
+            setVariable("content", "Thank you for registering.")
+            setVariable("actionUrl", "http://example.com/verify")
+            setVariable("actionText", "Verify Your Account")
+        }
+        emailService.sendHtmlMessage("user@example.com", "Welcome to Our Service", "verify-email", context)
+
 
         return userService.createUser(newUserDTO)
     }

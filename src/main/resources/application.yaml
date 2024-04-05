@@ -1,0 +1,50 @@
+#spring:
+#  datasource:
+#    url: jdbc:mariadb://127.0.0.1:3306/admin_spring
+#    username: root
+#    password: IxUfC2EiZUlvc3DK
+#    driver-class-name: org.mariadb.jdbc.Driver
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#    show-sql: true
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.MariaDBDialect
+
+spring:
+    datasource:
+        url: jdbc:h2:mem:testdb
+        driverClassName: org.h2.Driver
+        username: root
+        password: IxUfC2EiZUlvc3DK
+    jpa:
+        database-platform: org.hibernate.dialect.H2Dialect
+    mail:
+        host: sandbox.smtp.mailtrap.io
+        port: 587
+        username: bcf28e36cb7579
+        password: 62dfeb0657ed04
+        properties:
+            mail:
+                smtp:
+                    auth: true
+                    starttls:
+                        enable: true
+
+# JWT Token secret update here
+security:
+    jwt:
+        token:
+            secret-key: RQSyhIf0bKvwRZ3qoT6VOp3Y4SHkXSTFPVR1Xf02ryI=
+
+server:
+    error:
+        include-stacktrace: never
+
+logging:
+    level:
+        org:
+            springframework:
+                validation: DEBUG
+                boot: DEBUG
