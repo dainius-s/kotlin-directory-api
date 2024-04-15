@@ -16,15 +16,15 @@ spring:
     datasource:
         url: jdbc:h2:mem:testdb
         driverClassName: org.h2.Driver
-        username: root
-        password: IxUfC2EiZUlvc3DK
+        username: DB_USER
+        password: DB_PASS
     jpa:
         database-platform: org.hibernate.dialect.H2Dialect
     mail:
         host: sandbox.smtp.mailtrap.io
         port: 587
-        username: bcf28e36cb7579
-        password: 62dfeb0657ed04
+        username: EMAIL_USER
+        password: EMAIL_PASS
         properties:
             mail:
                 smtp:
@@ -36,7 +36,7 @@ spring:
 security:
     jwt:
         token:
-            secret-key: RQSyhIf0bKvwRZ3qoT6VOp3Y4SHkXSTFPVR1Xf02ryI=
+            secret-key: GENERATED_JWT_KEY
 
 server:
     error:
